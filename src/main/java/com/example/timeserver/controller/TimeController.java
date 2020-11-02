@@ -1,12 +1,15 @@
 package com.example.timeserver.controller;
 
+import com.example.timeserver.model.TimeResponse;
 import com.example.timeserver.service.TimeService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import java.time.*;
-import java.util.TimeZone;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 
 @RestController
@@ -20,26 +23,22 @@ public class TimeController {
     }
 
     @GetMapping("/time")
-
-    public String getTime() { //gets time in utc
-        Instant utcTime = Instant.now();
-        String finalTime = utcTime.toString();
-        System.out.println(finalTime);
-        return finalTime;
+    public String getTime() {
+        return timeService.getTime();
     }
-
 
     @GetMapping("/epochTime")
     public Long getEpochTime() {
         return timeService.getEpochTime();
 
     }
+    @GetMapping("/timeZone")
     public String getTimeZone() {
-
-        LocalDateTime timeInZone = LocalDateTime.now(TimeZone.getTimeZone("America/New_York").toZoneId());
-        Instant time = Instant.now();
-        System.out.println("Time in New York:" +timeInZone);
-        return timeInZone.toString();
-
+        return timeService.getTimeZone("America/Chicago");
     }
+    @GetMapping("/getTime")
+    public TimeResponse getTimeResponse() {
+        return timeService.getTimeResponse();
+    }
+
 }
